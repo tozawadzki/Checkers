@@ -26,5 +26,10 @@ namespace AICheckers
         {
             this.boardPanel2.Invalidate();
         }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

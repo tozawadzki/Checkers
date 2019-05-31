@@ -41,22 +41,25 @@
             // 
             // boardPanel2
             // 
-            this.boardPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.boardPanel2.Location = new System.Drawing.Point(12, 12);
+            this.boardPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.boardPanel2.Location = new System.Drawing.Point(16, 15);
+            this.boardPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.boardPanel2.Name = "boardPanel2";
-            this.boardPanel2.Size = new System.Drawing.Size(400, 400);
+            this.boardPanel2.Size = new System.Drawing.Size(533, 492);
             this.boardPanel2.TabIndex = 0;
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(425, 424);
+            this.ClientSize = new System.Drawing.Size(567, 522);
             this.Controls.Add(this.boardPanel2);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormMain";
             this.Text = "AI Checkers";
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.ResumeLayout(false);
 
         }

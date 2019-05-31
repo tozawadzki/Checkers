@@ -8,20 +8,18 @@ namespace AICheckers
 {
     class AI_Tree : IAI
     {
-        int AI_MAXPLYLEVEL = 2;
+        //Maksymalne "zagięcie", określamy w każdym drzewie behawioralnym
+        readonly int AI_MAXPLYLEVEL = 2;
 
-        //Offensive
-        int WEIGHT_CAPTUREPIECE = 2;
-        int WEIGHT_CAPTUREKING = 1;
-        int WEIGHT_CAPTUREDOUBLE = 5;
-        int WEIGHT_CAPTUREMULTI = 10;
+        //Waga ruchów ofensywnych
+        readonly int WEIGHT_CAPTUREPIECE = 2;
+        readonly int WEIGHT_CAPTUREKING = 1;
+        readonly int WEIGHT_CAPTUREDOUBLE = 5;
+        readonly int WEIGHT_CAPTUREMULTI = 10;
 
-        //Defensive
-        int WEIGHT_ATRISK = 3;
-        int WEIGHT_KINGATRISK = 4;
-
-        //Strategic
-        int WEIGHT_MAKEKING = 1;
+        //Waga ruchów obronnych
+        readonly int WEIGHT_ATRISK = 3;
+        readonly int WEIGHT_KINGATRISK = 4;
         
         CheckerColour colour;
 
@@ -35,9 +33,7 @@ namespace AICheckers
 
         public Move Process(Square[,] Board)
         {
-            Console.WriteLine();
-            Console.WriteLine("AI: Building Game Tree...");
-
+          
             gameTree = new Tree<Move>(new Move());
 
             for (int i = 0; i < 8; i++)
@@ -47,18 +43,12 @@ namespace AICheckers
                     if (Board[i, j].Colour == Colour)
                     {
                         foreach (Move myPossibleMove in Utils.GetOpenSquares(Board, new Point(j, i)))
-                        {
-                            
+                        {                    
                             CalculateChildMoves(0, gameTree.AddChild(myPossibleMove), myPossibleMove, DeepCopy(Board));
-
-                            //gameTree.AddChildren(Utils.GetOpenSquares(Board, new Point(j, i)));
                         }
                     }
                 }
             }
-
-            Console.WriteLine();
-            Console.WriteLine("AI: Scoring Game Tree...");
 
             ScoreTreeMoves(Board);
 
@@ -91,10 +81,8 @@ namespace AICheckers
 
             CheckerColour moveColour = vBoard[move.Source.Y, move.Source.X].Colour;
 
-            //Move the checker
             vBoard = ExecuteVirtualMove(move, vBoard);
 
-            //Calculate the other player's moves
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -124,7 +112,6 @@ namespace AICheckers
             Board[move.Source.Y, move.Source.X].Colour = CheckerColour.Empty;
             Board[move.Source.Y, move.Source.X].King = false;
 
-            //Kinging
             if ((move.Destination.Y == 7 && Board[move.Destination.Y, move.Destination.X].Colour == CheckerColour.Red)
                 || (move.Destination.Y == 0 && Board[move.Destination.Y, move.Destination.X].Colour == CheckerColour.Black))
             {
@@ -136,7 +123,6 @@ namespace AICheckers
 
         private void ScoreTreeMoves(Square[,] Board)
         {
-            //Iterate over top-level (currently possible) moves
             Action<Move> scoreMove = (Move move) => move.Score = ScoreMove(move, Board);
 
             foreach (Tree<Move> possibleMove in gameTree.Children)
@@ -148,8 +134,6 @@ namespace AICheckers
 
         private Move SumTreeMoves()
         {
-            //Iterate over top-level (currently possible) moves
-
             int branchSum = 0;
             Action<Move> sumScores = (Move move) => branchSum += move.Score;
 
@@ -160,7 +144,6 @@ namespace AICheckers
                 branchSum = 0;
             }
 
-            //Return highest score
             return gameTree.Children.OrderByDescending(o => o.Value.Score).ToList()[0].Value;
         }
 
@@ -168,19 +151,16 @@ namespace AICheckers
         {
             int score = 0;
 
-            //Offensive traits
             score += move.Captures.Count * WEIGHT_CAPTUREPIECE;
 
             if (move.Captures.Count == 2) score += WEIGHT_CAPTUREDOUBLE;
             if (move.Captures.Count > 2) score += WEIGHT_CAPTUREMULTI;
 
-            //Check King Captures
             foreach (Point point in move.Captures)
             {
                 if (board[point.Y, point.X].King) score += WEIGHT_CAPTUREKING;
             }
 
-            //Check if piece is at risk
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -204,20 +184,7 @@ namespace AICheckers
                     }
                 }
             }
-
-            //Check strategy
-            //TODO: Kinging code here
-
-
-            //Subtract score if we are evaluating an opponent's piece
             if (board[move.Source.Y, move.Source.X].Colour != colour) score *= -1;
-
-            Console.WriteLine(
-                "{0,-5} {1} Score: {2,2}",
-                board[move.Source.Y, move.Source.X].Colour.ToString(),
-                move.ToString(),
-                score
-                ); 
 
             return score;
         }
