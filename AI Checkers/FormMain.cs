@@ -31,5 +31,10 @@ namespace AICheckers
         {
 
         }
+
+        private void boardPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

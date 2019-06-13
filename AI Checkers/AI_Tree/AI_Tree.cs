@@ -42,7 +42,7 @@ namespace AICheckers
                 {
                     if (Board[i, j].Colour == Colour)
                     {
-                        foreach (Move myPossibleMove in Utils.GetOpenSquares(Board, new Point(j, i)))
+                        foreach (Move myPossibleMove in Minimax.GetOpenSquares(Board, new Point(j, i)))
                         {                    
                             CalculateChildMoves(0, gameTree.AddChild(myPossibleMove), myPossibleMove, DeepCopy(Board));
                         }
@@ -89,7 +89,7 @@ namespace AICheckers
                 {
                     if (vBoard[i, j].Colour != moveColour)
                     {
-                        foreach (Move otherPlayerMove in Utils.GetOpenSquares(vBoard, new Point(j, i)))
+                        foreach (Move otherPlayerMove in Minimax.GetOpenSquares(vBoard, new Point(j, i)))
                         {
                             if (vBoard[i, j].Colour != CheckerColour.Empty)
                             {
@@ -167,7 +167,7 @@ namespace AICheckers
                 {
                     if (board[i, j].Colour == Colour)
                     {
-                        foreach (Move opponentMove in Utils.GetOpenSquares(board, new Point(j, i)))
+                        foreach (Move opponentMove in Minimax.GetOpenSquares(board, new Point(j, i)))
                         {
                             if (opponentMove.Captures.Contains(move.Source))
                             {

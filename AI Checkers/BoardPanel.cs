@@ -182,7 +182,7 @@ namespace AICheckers
                 selectedChecker.Y = clickedY;
                 possibleMoves.Clear();
 
-                Move[] OpenSquares = Utils.GetOpenSquares(Board, selectedChecker);
+                Move[] OpenSquares = Minimax.GetOpenSquares(Board, selectedChecker);
                 possibleMoves.AddRange(OpenSquares);
 
                 this.Invalidate();
@@ -207,25 +207,25 @@ namespace AICheckers
 
                 for (int i = offset; i < Width; i += (squareWidth * 2))
                 {
-                    e.Graphics.FillRectangle(Brushes.DarkGray, c, i, squareWidth, squareWidth);
+                    e.Graphics.FillRectangle(Brushes.DarkKhaki, c, i, squareWidth, squareWidth);
                 }
             }
 
             //Pokazanie możliwych ruchów
             foreach (Move move in possibleMoves)
             {
-                e.Graphics.FillRectangle(Brushes.PaleTurquoise, move.Destination.X * squareWidth,
+                e.Graphics.FillRectangle(Brushes.Red, move.Destination.X * squareWidth,
                     move.Destination.Y * squareWidth, squareWidth, squareWidth);
             }
 
             if (selectedChecker.X >= 0 && selectedChecker.Y >= 0)
             {
-                e.Graphics.FillRectangle(Brushes.PeachPuff, selectedChecker.X * squareWidth,
+                e.Graphics.FillRectangle(Brushes.AntiqueWhite, selectedChecker.X * squareWidth,
                     selectedChecker.Y * squareWidth, squareWidth, squareWidth);
             }
 
             //Rysujemy planszę
-            e.Graphics.DrawRectangle(Pens.DarkGray,
+            e.Graphics.DrawRectangle(Pens.DarkKhaki,
                 e.ClipRectangle.Left,
                 e.ClipRectangle.Top,
                 e.ClipRectangle.Width - 1,
@@ -268,9 +268,6 @@ namespace AICheckers
                     }
                 }
             }
-
-
-
         }
     }
 }

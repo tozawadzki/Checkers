@@ -26,7 +26,7 @@ namespace AICheckers
                 {
                     if (Board[i, j].Colour == Colour)
                     {
-                        moves.AddRange(Utils.GetOpenSquares(Board, new Point(j, i)));
+                        moves.AddRange(Minimax.GetOpenSquares(Board, new Point(j, i)));
                     }
                 }
             }

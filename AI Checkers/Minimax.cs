@@ -6,7 +6,10 @@ using System.Drawing;
 
 namespace AICheckers
 {
-    static class Utils
+    /// <summary>
+    /// MINIMAX
+    /// </summary>
+    static class Minimax
     {
         /// <summary>
         /// "Konstruktor" ruchu
@@ -39,7 +42,8 @@ namespace AICheckers
             List<Move> OpenSquares = new List<Move>();
 
             //KRÓL: RUCH W GÓRA LEWO
-            if (Board[priorPositions[0].Y, priorPositions[0].X].Colour != CheckerColour.Red || Board[priorPositions[0].Y, priorPositions[0].X].King)        // W warunku znajduje się state, że zwykły pionek nie może się ruszyć w górę
+            if (Board[priorPositions[0].Y, priorPositions[0].X].Colour != CheckerColour.Red || Board[priorPositions[0].Y, priorPositions[0].X].King)       
+                // W warunku znajduje się state, że zwykły pionek nie może się ruszyć w górę
             {
                 if (IsValidPoint(checker.X - 1, checker.Y - 1))
                 {
