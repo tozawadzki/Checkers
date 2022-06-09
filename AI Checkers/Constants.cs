@@ -3,18 +3,32 @@
     public static class Constants
     {
 
-        private static int _boardSize = 12;
-        private static int _computerRows = 8;
+        private static int _boardSize = 8;
+        private static int _userRows = 1;
+        private static int _computerRows = 4;
+        private static bool _computerCanMove = true;
         public static int BOARD_SIZE
         {
             get { return _boardSize; }
             set { _boardSize = value; }
         }
 
+        public static int USER_ROWS
+        {
+            get { return _userRows; }
+            set { _userRows = value; }
+        }
+
         public static int COMPUTER_ROWS
         {
             get { return _computerRows; }
             set { _computerRows = value; }
+        }
+
+        public static bool COMPUTER_CAN_MOVE
+        {
+            get { return _computerCanMove; }
+            set { _computerCanMove = value; }
         }
 
         //Maksymalne "zagięcie", określamy w każdym drzewie behawioralnym
@@ -31,6 +45,7 @@
         public static int WEIGHT_KINGATRISK = 4;
 
         public static int USERS_ROWS = 3;
+
 
     }
 }

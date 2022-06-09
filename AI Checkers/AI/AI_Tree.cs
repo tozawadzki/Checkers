@@ -19,7 +19,6 @@ namespace AICheckers
 
         public Move Process(Square[,] Board)
         {
-          
             gameTree = new Tree<Move>(new Move());
 
             for (int i = 0; i < Constants.BOARD_SIZE; i++)
@@ -128,6 +127,11 @@ namespace AICheckers
                 possibleMove.Traverse(sumScores);
                 possibleMove.Value.Score += branchSum;
                 branchSum = 0;
+            }
+
+            if (gameTree.Children.Count == 0)
+            {
+                Environment.Exit(0);
             }
 
             return gameTree.Children.OrderByDescending(o => o.Value.Score).ToList()[0].Value;

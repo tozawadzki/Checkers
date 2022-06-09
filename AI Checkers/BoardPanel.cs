@@ -4,6 +4,8 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using AICheckers.Properties;
+using System.Collections;
+using System;
 
 namespace AICheckers
 {
@@ -66,7 +68,7 @@ namespace AICheckers
                 //Przygotowanie warcabów (rozmieszczenie na planszy czarnych i czerwonych)
                 for (int j = offset; j < Constants.BOARD_SIZE; j += 2)
                 {
-                    if (i < 3)
+                    if (i < Constants.USERS_ROWS)
                         Board[i, j].Color = CheckerColor.Red;
                     if (i > Constants.COMPUTER_ROWS)
                         Board[i, j].Color = CheckerColor.Black;
@@ -256,8 +258,15 @@ namespace AICheckers
                                 new Rectangle(j * squareWidth, i * squareWidth, squareWidth, squareWidth));
                         }
                     }
+                    
                 }
             }
+
+            var redCheckers = Board.Cast<Square>().Where(x => x.Color == CheckerColor.Red);
+            var blackCheckers = Board.Cast<Square>().Where(x => x.Color == CheckerColor.Black);
+
+            if (!redCheckers.Any() || !blackCheckers.Any())
+                Environment.Exit(0);
         }
     }
 }
