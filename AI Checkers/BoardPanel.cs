@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using AICheckers.Properties;
-using System.Collections;
 using System;
 
 namespace AICheckers
