@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace AICheckers
@@ -42,21 +39,21 @@ namespace AICheckers
             List<Move> OpenSquares = new List<Move>();
 
             //KRÓL: RUCH W GÓRA LEWO
-            if (Board[priorPositions[0].Y, priorPositions[0].X].Colour != CheckerColour.Red || Board[priorPositions[0].Y, priorPositions[0].X].King)       
+            if (Board[priorPositions[0].Y, priorPositions[0].X].Color != CheckerColor.Red || Board[priorPositions[0].Y, priorPositions[0].X].King)       
                 // W warunku znajduje się state, że zwykły pionek nie może się ruszyć w górę
             {
                 if (IsValidPoint(checker.X - 1, checker.Y - 1))
                 {
-                    if (Board[checker.Y - 1, checker.X - 1].Colour == CheckerColour.Empty && lastMove.Destination.X == -1)
+                    if (Board[checker.Y - 1, checker.X - 1].Color == CheckerColor.Empty && lastMove.Destination.X == -1)
                     {
                         OpenSquares.Add(new Move(priorPositions[0], checker.X - 1, checker.Y - 1));
                     }
-                    //Sprawdzenie, czy pole jest accessible
+                    //Sprawdzenie, czy pole jest dostępne
                     else if (IsValidPoint(checker.X - 2, checker.Y - 2)
                         && ((checker.X - 2) != lastMove.Destination.X || (checker.Y - 2) != lastMove.Destination.Y)
                         && ((checker.X - 2) != priorPositions[0].X || (checker.Y - 2) != priorPositions[0].Y)
-                        && Board[checker.Y - 1, checker.X - 1].Colour != Board[checker.Y, checker.X].Colour
-                        && Board[checker.Y - 2, checker.X - 2].Colour == CheckerColour.Empty)
+                        && Board[checker.Y - 1, checker.X - 1].Color != Board[checker.Y, checker.X].Color
+                        && Board[checker.Y - 2, checker.X - 2].Color == CheckerColor.Empty)
                     {
                         //Stworzenie nowego punktu, w którym znajdzie się warcab
                         Point newDest = new Point(checker.X - 2, checker.Y - 2);
@@ -79,19 +76,19 @@ namespace AICheckers
             }
 
             //KRÓL: RUCH GÓRA PRAWO
-            if (Board[priorPositions[0].Y, priorPositions[0].X].Colour != CheckerColour.Red || Board[priorPositions[0].Y, priorPositions[0].X].King)
+            if (Board[priorPositions[0].Y, priorPositions[0].X].Color != CheckerColor.Red || Board[priorPositions[0].Y, priorPositions[0].X].King)
             {
                 if (IsValidPoint(checker.X + 1, checker.Y - 1))
                 {
-                    if (Board[checker.Y - 1, checker.X + 1].Colour == CheckerColour.Empty && lastMove.Destination.X == -1)
+                    if (Board[checker.Y - 1, checker.X + 1].Color == CheckerColor.Empty && lastMove.Destination.X == -1)
                     {
                         OpenSquares.Add(new Move(priorPositions[0], checker.X + 1, checker.Y - 1));
                     }
                     else if (IsValidPoint(checker.X + 2, checker.Y - 2)
                         && ((checker.X + 2) != lastMove.Destination.X || (checker.Y - 2) != lastMove.Destination.Y)
                         && ((checker.X + 2) != priorPositions[0].X || (checker.Y - 2) != priorPositions[0].Y)
-                        && Board[checker.Y - 1, checker.X + 1].Colour != Board[checker.Y, checker.X].Colour
-                        && Board[checker.Y - 2, checker.X + 2].Colour == CheckerColour.Empty)
+                        && Board[checker.Y - 1, checker.X + 1].Color != Board[checker.Y, checker.X].Color
+                        && Board[checker.Y - 2, checker.X + 2].Color == CheckerColor.Empty)
                     {
                         Point newDest = new Point(checker.X + 2, checker.Y - 2);
                         if (!priorPositions.Contains(new Point(checker.X + 2, checker.Y - 2)))
@@ -110,19 +107,19 @@ namespace AICheckers
             }
 
             //RUCH W DÓŁ LEWO
-            if (Board[priorPositions[0].Y, priorPositions[0].X].Colour != CheckerColour.Black || Board[priorPositions[0].Y, priorPositions[0].X].King)
+            if (Board[priorPositions[0].Y, priorPositions[0].X].Color != CheckerColor.Black || Board[priorPositions[0].Y, priorPositions[0].X].King)
             {
                 if (IsValidPoint(checker.X - 1, checker.Y + 1))
                 {
-                    if (Board[checker.Y + 1, checker.X - 1].Colour == CheckerColour.Empty && lastMove.Destination.X == -1)
+                    if (Board[checker.Y + 1, checker.X - 1].Color == CheckerColor.Empty && lastMove.Destination.X == -1)
                     {
                         OpenSquares.Add(new Move(priorPositions[0], checker.X - 1, checker.Y + 1));
                     }
                     else if (IsValidPoint(checker.X - 2, checker.Y + 2)
                         && ((checker.X - 2) != lastMove.Destination.X || (checker.Y + 2) != lastMove.Destination.Y)
                         && ((checker.X - 2) != priorPositions[0].X || (checker.Y + 2) != priorPositions[0].Y)
-                        && Board[checker.Y + 1, checker.X - 1].Colour != Board[checker.Y, checker.X].Colour
-                        && Board[checker.Y + 2, checker.X - 2].Colour == CheckerColour.Empty)
+                        && Board[checker.Y + 1, checker.X - 1].Color != Board[checker.Y, checker.X].Color
+                        && Board[checker.Y + 2, checker.X - 2].Color == CheckerColor.Empty)
                     {
                         Point newDest = new Point(checker.X - 2, checker.Y + 2);
                         if (!priorPositions.Contains(newDest))
@@ -141,19 +138,19 @@ namespace AICheckers
             }
 
             //RUCH W DÓŁ PRAWO
-            if (Board[priorPositions[0].Y, priorPositions[0].X].Colour != CheckerColour.Black || Board[priorPositions[0].Y, priorPositions[0].X].King)
+            if (Board[priorPositions[0].Y, priorPositions[0].X].Color != CheckerColor.Black || Board[priorPositions[0].Y, priorPositions[0].X].King)
             {
                 if (IsValidPoint(checker.X + 1, checker.Y + 1))
                 {
-                    if (Board[checker.Y + 1, checker.X + 1].Colour == CheckerColour.Empty && lastMove.Destination.X == -1)
+                    if (Board[checker.Y + 1, checker.X + 1].Color == CheckerColor.Empty && lastMove.Destination.X == -1)
                     {
                         OpenSquares.Add(new Move(priorPositions[0], checker.X + 1, checker.Y + 1));
                     }
                     else if (IsValidPoint(checker.X + 2, checker.Y + 2)
                         && ((checker.X + 2) != lastMove.Destination.X || (checker.Y + 2) != lastMove.Destination.Y)
                         && ((checker.X + 2) != priorPositions[0].X || (checker.Y + 2) != priorPositions[0].Y)
-                        && Board[checker.Y + 1, checker.X + 1].Colour != Board[checker.Y, checker.X].Colour
-                        && Board[checker.Y + 2, checker.X + 2].Colour == CheckerColour.Empty)
+                        && Board[checker.Y + 1, checker.X + 1].Color != Board[checker.Y, checker.X].Color
+                        && Board[checker.Y + 2, checker.X + 2].Color == CheckerColor.Empty)
                     {
                         Point newDest = new Point(checker.X + 2, checker.Y + 2);
                         if (!priorPositions.Contains(newDest))
@@ -183,19 +180,8 @@ namespace AICheckers
         /// <returns></returns>
         private static bool IsValidPoint(int x, int y)
         {
-            if (0 <= x && x < 8 && 0 <= y && y < 8) return true;
+            if (0 <= x && x < Constants.BOARD_SIZE && 0 <= y && y < Constants.BOARD_SIZE) return true;
             return false;
-        }
-
-        /// <summary>
-        /// JW
-        /// argumenty to zmienna typu Point, również posiadająca x i y
-        /// </summary>
-        /// <param name="point"></param>
-        /// <returns></returns>
-        private static bool IsValidPoint(Point point)
-        {
-            return (IsValidPoint(point.X, point.Y));
         }
     }
 }

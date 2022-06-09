@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace AICheckers
+﻿namespace AICheckers
 {
     /// <summary>
     /// enum przypisujący wartości liczbowe do "stanu" w jakim znajduje się kwadracik
     /// może być pusty, może mieć czarnego lub czerwonego warcaba
     /// </summary>
-    public enum CheckerColour
+    public enum CheckerColor
     {
         Empty,
         Red,
@@ -22,7 +17,7 @@ namespace AICheckers
     /// </summary>
     class Square
     {
-        public CheckerColour Colour = CheckerColour.Empty;
+        public CheckerColor Color = CheckerColor.Empty;
         public bool King = false;
     }
 }

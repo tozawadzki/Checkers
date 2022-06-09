@@ -1,30 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 
 namespace AICheckers
 {
     class AI_Random : IAI
     {
-        CheckerColour colour;
+        CheckerColor color;
 
-        public CheckerColour Colour
+        public CheckerColor Color
         {
-            get { return colour; }
-            set { colour = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         public Move Process(Square[,] Board)
         {
             List<Move> moves = new List<Move>();
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < Constants.BOARD_SIZE; j++)
                 {
-                    if (Board[i, j].Colour == Colour)
+                    if (Board[i, j].Color == Color)
                     {
                         moves.AddRange(Minimax.GetOpenSquares(Board, new Point(j, i)));
                     }

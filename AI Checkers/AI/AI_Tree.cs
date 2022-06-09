@@ -1,34 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 
 namespace AICheckers
 {
     class AI_Tree : IAI
     {
-        //Maksymalne "zagięcie", określamy w każdym drzewie behawioralnym
-        readonly int AI_MAXPLYLEVEL = 2;
-
-        //Waga ruchów ofensywnych
-        readonly int WEIGHT_CAPTUREPIECE = 2;
-        readonly int WEIGHT_CAPTUREKING = 1;
-        readonly int WEIGHT_CAPTUREDOUBLE = 5;
-        readonly int WEIGHT_CAPTUREMULTI = 10;
-
-        //Waga ruchów obronnych
-        readonly int WEIGHT_ATRISK = 3;
-        readonly int WEIGHT_KINGATRISK = 4;
         
-        CheckerColour colour;
+        CheckerColor color;
 
         Tree<Move> gameTree;
 
-        public CheckerColour Colour
+        public CheckerColor Color
         {
-            get { return colour; }
-            set { colour = value; }
+            get { return color; }
+            set { color = value; }
         }
 
         public Move Process(Square[,] Board)
@@ -36,11 +22,11 @@ namespace AICheckers
           
             gameTree = new Tree<Move>(new Move());
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < Constants.BOARD_SIZE; j++)
                 {
-                    if (Board[i, j].Colour == Colour)
+                    if (Board[i, j].Color == Color)
                     {
                         foreach (Move myPossibleMove in Minimax.GetOpenSquares(Board, new Point(j, i)))
                         {                    
@@ -57,14 +43,14 @@ namespace AICheckers
 
         private Square[,] DeepCopy(Square[,] sourceBoard)
         {
-            Square[,] result = new Square[8, 8];
+            Square[,] result = new Square[Constants.BOARD_SIZE, Constants.BOARD_SIZE];
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < Constants.BOARD_SIZE; j++)
                 {
                     result[i, j] = new Square();
-                    result[i, j].Colour = sourceBoard[i, j].Colour;
+                    result[i, j].Color = sourceBoard[i, j].Color;
                     result[i, j].King = sourceBoard[i, j].King;
                 }
             }
@@ -74,24 +60,24 @@ namespace AICheckers
 
         private void CalculateChildMoves(int recursionLevel, Tree<Move> branch, Move move, Square[,] vBoard)
         {
-            if (recursionLevel >= AI_MAXPLYLEVEL)
+            if (recursionLevel >= Constants.AI_MAXPLYLEVEL)
             {
                 return;
             }
 
-            CheckerColour moveColour = vBoard[move.Source.Y, move.Source.X].Colour;
+            CheckerColor moveColor = vBoard[move.Source.Y, move.Source.X].Color;
 
             vBoard = ExecuteVirtualMove(move, vBoard);
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < Constants.BOARD_SIZE; j++)
                 {
-                    if (vBoard[i, j].Colour != moveColour)
+                    if (vBoard[i, j].Color != moveColor)
                     {
                         foreach (Move otherPlayerMove in Minimax.GetOpenSquares(vBoard, new Point(j, i)))
                         {
-                            if (vBoard[i, j].Colour != CheckerColour.Empty)
+                            if (vBoard[i, j].Color != CheckerColor.Empty)
                             {
                                 CalculateChildMoves(
                                     ++recursionLevel,
@@ -107,13 +93,13 @@ namespace AICheckers
 
         private Square[,] ExecuteVirtualMove(Move move, Square[,] Board)
         {
-            Board[move.Destination.Y, move.Destination.X].Colour = Board[move.Source.Y, move.Source.X].Colour;
+            Board[move.Destination.Y, move.Destination.X].Color = Board[move.Source.Y, move.Source.X].Color;
             Board[move.Destination.Y, move.Destination.X].King = Board[move.Source.Y, move.Source.X].King;
-            Board[move.Source.Y, move.Source.X].Colour = CheckerColour.Empty;
+            Board[move.Source.Y, move.Source.X].Color = CheckerColor.Empty;
             Board[move.Source.Y, move.Source.X].King = false;
 
-            if ((move.Destination.Y == 7 && Board[move.Destination.Y, move.Destination.X].Colour == CheckerColour.Red)
-                || (move.Destination.Y == 0 && Board[move.Destination.Y, move.Destination.X].Colour == CheckerColour.Black))
+            if ((move.Destination.Y == Constants.BOARD_SIZE-1 && Board[move.Destination.Y, move.Destination.X].Color == CheckerColor.Red)
+                || (move.Destination.Y == 0 && Board[move.Destination.Y, move.Destination.X].Color == CheckerColor.Black))
             {
                 Board[move.Destination.Y, move.Destination.X].King = true;
             }
@@ -151,21 +137,21 @@ namespace AICheckers
         {
             int score = 0;
 
-            score += move.Captures.Count * WEIGHT_CAPTUREPIECE;
+            score += move.Captures.Count * Constants.WEIGHT_CAPTUREPIECE;
 
-            if (move.Captures.Count == 2) score += WEIGHT_CAPTUREDOUBLE;
-            if (move.Captures.Count > 2) score += WEIGHT_CAPTUREMULTI;
+            if (move.Captures.Count == 2) score += Constants.WEIGHT_CAPTUREDOUBLE;
+            if (move.Captures.Count > 2) score += Constants.WEIGHT_CAPTUREMULTI;
 
             foreach (Point point in move.Captures)
             {
-                if (board[point.Y, point.X].King) score += WEIGHT_CAPTUREKING;
+                if (board[point.Y, point.X].King) score += Constants.WEIGHT_CAPTUREKING;
             }
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < Constants.BOARD_SIZE; j++)
                 {
-                    if (board[i, j].Colour == Colour)
+                    if (board[i, j].Color == Color)
                     {
                         foreach (Move opponentMove in Minimax.GetOpenSquares(board, new Point(j, i)))
                         {
@@ -173,18 +159,18 @@ namespace AICheckers
                             {
                                 if (board[move.Source.Y, move.Source.X].King)
                                 {
-                                    score += WEIGHT_KINGATRISK;
+                                    score += Constants.WEIGHT_KINGATRISK;
                                 }
                                 else
                                 {
-                                    score += WEIGHT_ATRISK;
+                                    score += Constants.WEIGHT_ATRISK;
                                 }
                             }
                         }
                     }
                 }
             }
-            if (board[move.Source.Y, move.Source.X].Colour != colour) score *= -1;
+            if (board[move.Source.Y, move.Source.X].Color != color) score *= -1;
 
             return score;
         }

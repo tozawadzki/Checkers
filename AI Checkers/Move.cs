@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Drawing;
 
 namespace AICheckers
@@ -16,6 +14,7 @@ namespace AICheckers
         public Move()
         {
         }
+
         /// <summary>
         /// Konstruktor parametryczny Move
         /// Pobiera dwa punkty z następującymi informacjami:
@@ -41,6 +40,7 @@ namespace AICheckers
             : this(source, new Point(destinationX, destinationY))
         {
         }
+
         /// <summary>
         /// Konsturktor parametryczny klasy Move
         /// Zamienia 4 inty mówiące o położeniu początku i końca, zamienia na dwie zmienne typu Point
@@ -91,5 +91,8 @@ namespace AICheckers
         {
             return String.Format("Source: {0}, Dest: {1}", source, destination);
         }
+
+
     }
+
 }

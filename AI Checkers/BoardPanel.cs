@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -15,7 +13,6 @@ namespace AICheckers
         IAI AI = null;
 
         //Zainicjalizowanie kwadracików kolorami
-        private readonly Color darkSquare = Color.Chocolate;
         private readonly Color lightSquare = Color.LightGray;
 
         //Upload obrazków 
@@ -25,7 +22,7 @@ namespace AICheckers
         private readonly Image blackCheckerKing = Resources.checkerblackking;
 
         //Określenie tury 
-        private CheckerColour turn = CheckerColour.Black;
+        private CheckerColor turn = CheckerColor.Black;
 
         //Ustawienie domyślnych wartości dla punktów
         private Point oldP = new Point(-1, -1);
@@ -36,15 +33,8 @@ namespace AICheckers
         List<Move> possibleMoves = new List<Move>();
 
         //Animacje
-        private const int animationDuration = 1000; // 1000ms=1s
-        private readonly Square[,] Board = new Square[8, 8];
+        private readonly Square[,] Board = new Square[Constants.BOARD_SIZE, Constants.BOARD_SIZE];
         private int squareWidth = 0;
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            this.ResumeLayout(false);
-        }
 
         //Inicjalizacja panelu
         public BoardPanel()
@@ -56,17 +46,17 @@ namespace AICheckers
             this.ResizeRedraw = true;
 
             //INICJALIZUJEMY PLANSZE
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0; j < Constants.BOARD_SIZE; j++)
                 {
                     Board[i, j] = new Square();
-                    Board[i, j].Colour = CheckerColour.Empty;
+                    Board[i, j].Color = CheckerColor.Empty;
                 }
             }
 
             //OKREŚLAMY CZYJE WARCABY SĄ PO JAKIEJ STRONIE
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
                 int offset = 0;
 
@@ -74,19 +64,19 @@ namespace AICheckers
                     offset++;
 
                 //Przygotowanie warcabów (rozmieszczenie na planszy czarnych i czerwonych)
-                for (int j = offset; j < 8; j += 2)
+                for (int j = offset; j < Constants.BOARD_SIZE; j += 2)
                 {
                     if (i < 3)
-                        Board[i, j].Colour = CheckerColour.Red;
-                    if (i > 4)
-                        Board[i, j].Colour = CheckerColour.Black;
+                        Board[i, j].Color = CheckerColor.Red;
+                    if (i > Constants.COMPUTER_ROWS)
+                        Board[i, j].Color = CheckerColor.Black;
                 }
             }
 
             AI = new AI_Tree();
 
             //PRZYDZIELAMY KOMPUTEROWI CZARNE WARCABY
-            AI.Colour = CheckerColour.Black;
+            AI.Color = CheckerColor.Black;
 
             //Przydzielenie tury
             ChangeTurn();
@@ -94,12 +84,12 @@ namespace AICheckers
 
         private void ChangeTurn()
         {
-            if (turn == CheckerColour.Red)
-                turn = CheckerColour.Black;
+            if (turn == CheckerColor.Red)
+                turn = CheckerColor.Black;
             else
-                turn = CheckerColour.Red;
+                turn = CheckerColor.Red;
 
-            if (AI != null && AI.Colour == turn)
+            if (AI != null && AI.Color == turn)
             {
                 Move AIMove = AI.Process(Board);
                 MoveChecker(AIMove);
@@ -108,14 +98,14 @@ namespace AICheckers
 
         private void Reset(Point square)
         {
-            Board[square.Y, square.X].Colour = CheckerColour.Empty;
+            Board[square.Y, square.X].Color = CheckerColor.Empty;
             Board[square.Y, square.X].King = false;
         }
 
         private void MoveChecker(Move move)
         {
             // Ustalamy property warcaba po ruchu, aby zostały takie same
-            Board[move.Destination.Y, move.Destination.X].Colour = Board[move.Source.Y, move.Source.X].Colour;
+            Board[move.Destination.Y, move.Destination.X].Color = Board[move.Source.Y, move.Source.X].Color;
             // Dzięki temu zapobiegamy sytuacji, w której po ruchu nagle warcab traci miano Króla
             Board[move.Destination.Y, move.Destination.X].King = Board[move.Source.Y, move.Source.X].King;
             Reset(move.Source);
@@ -127,9 +117,9 @@ namespace AICheckers
             selectedChecker.Y = -1;
 
             // Pola królewskie
-            if ((move.Destination.Y == 7 && Board[move.Destination.Y, move.Destination.X].Colour == CheckerColour.Red)
+            if ((move.Destination.Y == Constants.BOARD_SIZE - 1 && Board[move.Destination.Y, move.Destination.X].Color == CheckerColor.Red)
                 || (move.Destination.Y == 0 &&
-                    Board[move.Destination.Y, move.Destination.X].Colour == CheckerColour.Black))
+                    Board[move.Destination.Y, move.Destination.X].Color == CheckerColor.Black))
             {
                 Board[move.Destination.Y, move.Destination.X].King = true;
             }
@@ -157,15 +147,15 @@ namespace AICheckers
         /// <param name="e"></param>
         protected override void OnMouseClick(MouseEventArgs e)
         {
-            int clickedX = (int) (((double) e.X / (double) Width) * 8.0d);
-            int clickedY = (int) (((double) e.Y / (double) Height) * 8.0d);
+            int clickedX = (int) (((double) e.X / (double) Width) * Constants.BOARD_SIZE);
+            int clickedY = (int) (((double) e.Y / (double) Height) * Constants.BOARD_SIZE);
 
             //Tworzymy nowy punkt kliknięcia
             Point clickedP = new Point(clickedX, clickedY);
 
             //Sprawdzamy ruch gracza
-            if (Board[clickedY, clickedX].Colour != CheckerColour.Empty
-                && Board[clickedY, clickedX].Colour != turn)
+            if (Board[clickedY, clickedX].Color != CheckerColor.Empty
+                && Board[clickedY, clickedX].Color != turn)
                 return;
 
             //Sprawdzamy, czy gracz się porusza czy tylko zmienia warcaba
@@ -175,7 +165,7 @@ namespace AICheckers
                 //Poruszamy się warcabem we wskazane miejsce
                 MoveChecker(matches[0]);
             }
-            else if (Board[clickedY, clickedX].Colour != CheckerColour.Empty)
+            else if (Board[clickedY, clickedX].Color != CheckerColor.Empty)
             {
                 //Zmieniamy warcaba
                 selectedChecker.X = clickedX;
@@ -196,7 +186,7 @@ namespace AICheckers
             e.Graphics.Clear(lightSquare);
 
             //Rysujemy boarda
-            squareWidth = (Width) / 8;
+            squareWidth = (Width) / Constants.BOARD_SIZE;
             for (int c = 0; c < Width; c += squareWidth)
             {
                 int offset = 0;
@@ -236,11 +226,11 @@ namespace AICheckers
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 
             //Rysujemy warcaby poprzez dostarczone obrazki
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < Constants.BOARD_SIZE; i++)
             {
-                for (int j = 0; j < 8; j++)
+                for (int j = 0;  j < Constants.BOARD_SIZE; j++)
                 {
-                    if (Board[i, j].Colour == CheckerColour.Red)
+                    if (Board[i, j].Color == CheckerColor.Red)
                     {
                         if (Board[i, j].King)
                         {
@@ -253,7 +243,7 @@ namespace AICheckers
                                 new Rectangle(j * squareWidth, i * squareWidth, squareWidth, squareWidth));
                         }
                     }
-                    else if (Board[i, j].Colour == CheckerColour.Black)
+                    else if (Board[i, j].Color == CheckerColor.Black)
                     {
                         if (Board[i, j].King)
                         {
