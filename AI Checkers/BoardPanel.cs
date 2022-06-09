@@ -68,7 +68,7 @@ namespace AICheckers
                 //Przygotowanie warcabów (rozmieszczenie na planszy czarnych i czerwonych)
                 for (int j = offset; j < Constants.BOARD_SIZE; j += 2)
                 {
-                    if (i < Constants.USERS_ROWS)
+                    if (i < Constants.USER_ROWS)
                         Board[i, j].Color = CheckerColor.Red;
                     if (i > Constants.COMPUTER_ROWS)
                         Board[i, j].Color = CheckerColor.Black;
@@ -265,7 +265,9 @@ namespace AICheckers
             var redCheckers = Board.Cast<Square>().Where(x => x.Color == CheckerColor.Red);
             var blackCheckers = Board.Cast<Square>().Where(x => x.Color == CheckerColor.Black);
 
+            //Koniec gry
             if (!redCheckers.Any() || !blackCheckers.Any())
+                //Zamknięcie aplikacji
                 Environment.Exit(0);
         }
     }

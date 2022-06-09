@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace AICheckers
 {
-    public partial class FormMain : Form
+    public partial class Checkers : Form
     {
-        public FormMain()
+        public Checkers()
         {
             InitializeComponent();
         }

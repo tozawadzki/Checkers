@@ -1,6 +1,6 @@
 ﻿namespace AICheckers
 {
-    partial class FormMain
+    partial class Checkers
     {
         /// <summary>
         /// Required designer variable.
