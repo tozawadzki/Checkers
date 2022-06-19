@@ -35,8 +35,8 @@ namespace AICheckers
                 Constants.BOARD_SIZE = boardSize;
                 Constants.COMPUTER_ROWS = 8;
             }
-
-            if(level == "easy")
+            Constants.AI_AlGORITHM = level;
+            if(level == "MinMax Easy")
             {
                 Constants.WEIGHT_KINGATRISK = 7;
                 Constants.WEIGHT_ATRISK = 5;

@@ -59,8 +59,9 @@
             // 
             this.levelComboBox.FormattingEnabled = true;
             this.levelComboBox.Items.AddRange(new object[] {
-            "Easy",
-            "Hard"});
+            "MinMax Easy",
+            "MinMax Hard",
+            "Monte Carlo"});
             this.levelComboBox.Location = new System.Drawing.Point(102, 83);
             this.levelComboBox.Name = "levelComboBox";
             this.levelComboBox.Size = new System.Drawing.Size(121, 21);
