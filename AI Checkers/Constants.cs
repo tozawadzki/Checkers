@@ -13,6 +13,7 @@
         private static int _captureMulti = 10;
         private static int _atRisk = 3;
         private static int _kingAtRisk = 4;
+        private static string _algorithm = "MinMax Hard";
         public static int BOARD_SIZE
         {
             get { return _boardSize; }
@@ -70,6 +71,12 @@
         {
             get { return _kingAtRisk; }
             set { _kingAtRisk = value; }
+        }
+
+        public static string AI_AlGORITHM
+        {
+            get { return _algorithm; }
+            set { _algorithm = value; }
         }
 
         //Maksymalne "zagięcie", określamy w każdym drzewie behawioralnym

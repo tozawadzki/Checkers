@@ -74,7 +74,17 @@ namespace AICheckers
                 }
             }
 
-            AI = new AI_Tree();
+            switch(Constants.AI_AlGORITHM)
+            {
+                case "MinMax Easy":
+                case "MinMax Hard":
+                    AI = new AI_Tree();
+                    break;
+                case "Monte Carlo":
+                    AI = new MonteCarlo();
+                    break;
+            }
+            
 
             //PRZYDZIELAMY KOMPUTEROWI CZARNE WARCABY
             AI.Color = CheckerColor.Black;

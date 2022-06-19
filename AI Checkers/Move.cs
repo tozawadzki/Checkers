@@ -10,6 +10,8 @@ namespace AICheckers
         private Point destination = new Point(-1, -1);
         private List<Point> captures = new List<Point>();
         private int score = 0;
+        private int colFrom, rowFrom, colTo, rowTo;
+        public Boolean isJump = false;
 
         public Move()
         {
@@ -52,6 +54,13 @@ namespace AICheckers
         public Move(int sourceX, int sourceY, int destinationX, int destinationY)
             : this(new Point(sourceX, sourceY), new Point(destinationX, destinationY))
         {
+        }
+
+        public Move(int colFrom, int rowFrom, int colTo, int rowTo, Boolean isJump)
+        {
+            this.source = new Point(rowFrom, colFrom);
+            this.destination = new Point(rowTo, colTo);
+            this.isJump = isJump;
         }
 
         /// <summary>
